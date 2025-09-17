@@ -1,23 +1,31 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
-dotenv.config({ path: "./config.env" }); // Ensure dotenv is configured for this file too
+dotenv.config({ path: "./config.env" });
 
-const connectDB = () => {
+let cached = global.mongoose;
+
+if (!cached) cached = global.mongoose = { conn: null };
+
+const connectDB = async () => {
+  if (cached.conn) return cached.conn;
+
   const DB = process.env.DATABASE.replace(
     "<PASSWORD>",
     process.env.DATABASE_PASSWORD
   );
 
-  mongoose.connect(DB);
+  const conn = await mongoose.connect(DB, {
+    // optional mongoose options
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
   mongoose.set("strictQuery", true);
 
-  const conn = mongoose.connection;
-  conn.on("error", console.error.bind(console, "connection error:"));
-  conn.once("open", () => {
-    console.log("DB connection successful!");
-  });
+  cached.conn = conn;
+  console.log("DB connection successful!");
+  return conn;
 };
 
 module.exports = connectDB;
