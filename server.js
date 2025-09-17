@@ -6,6 +6,11 @@ connectDB();
 
 // SERVER
 const port = process.env.PORT || 8000; // Fly injects PORT
-app.listen(port, "0.0.0.0", () => {
-  console.log(`App running on port ${port}...`);
+app.get("/", (req, res) => {
+  res.send("server running");
 });
+// app.listen(port, "0.0.0.0", () => {
+//   console.log(`App running on port ${port}...`);
+// });
+
+module.exports = app;
