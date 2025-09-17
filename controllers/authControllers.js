@@ -5,7 +5,10 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const PendingUser = require("../models/pendingUserSchema");
 const { sendMail } = require("../config/nodemailer");
-const { generateOtpEmailHtml, generateWelcomeEmailHtml } = require("../utils/emailTemplates");
+const {
+  generateOtpEmailHtml,
+  generateWelcomeEmailHtml,
+} = require("../utils/emailTemplates");
 
 const register = async (req, res) => {
   try {
@@ -81,8 +84,8 @@ const otpVerify = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      secure: true,
+      sameSite: "none",
     });
 
     res.status(200).json({ status: "success" });
@@ -140,8 +143,8 @@ const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      secure: true,
+      sameSite: "none",
     });
 
     res.status(200).json({
