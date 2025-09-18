@@ -5,7 +5,10 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const PendingUser = require("../models/pendingUserSchema");
 const { sendMail } = require("../config/nodemailer");
-const { generateOtpEmailHtml, generateWelcomeEmailHtml } = require("../utils/emailTemplates");
+const {
+  generateOtpEmailHtml,
+  generateWelcomeEmailHtml,
+} = require("../utils/emailTemplates");
 
 const register = async (req, res) => {
   try {
@@ -27,7 +30,6 @@ const register = async (req, res) => {
     await PendingUser.create({
       name,
       email,
-
       password: hashedPassword,
       otp,
       otpExpiresAt: Date.now() + 5 * 60 * 1000,
@@ -76,13 +78,11 @@ const otpVerify = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res
-      .status(200)
-      .json({
-        status: "success",
-        token,
-        user: { id: user._id, email: user.email, name: user.name },
-      });
+    res.status(200).json({
+      status: "success",
+      token,
+      user: { id: user._id, email: user.email, name: user.name },
+    });
   } catch (err) {
     res.status(400).json({ status: "fail", message: err.message });
   }
@@ -159,8 +159,11 @@ const signOut = (req, res) => {
 
 const verifyUser = (req, res) => {
   let token;
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    token = req.headers.authorization.split(' ')[1];
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
   }
 
   if (!token)

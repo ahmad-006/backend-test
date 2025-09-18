@@ -19,7 +19,7 @@ const PendingUserSchema = new mongoose.Schema(
       required: [true, "Please provide a password"],
       minlength: 8,
     },
-    
+
     otp: {
       type: Number,
       required: true,

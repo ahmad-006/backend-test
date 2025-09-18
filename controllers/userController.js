@@ -123,7 +123,7 @@ forgotPassword = async (req, res) => {
     await user.save();
 
     // Send reset link via email
-    const resetURL = `http://localhost:5173/reset-password/${resetToken}`;
+    const resetURL = `http://financybuddy.vercel.app/reset-password/${resetToken}`;
     const htmlEmail = generateResetPasswordEmailHtml(resetURL);
     await sendMail(
       user.email,
